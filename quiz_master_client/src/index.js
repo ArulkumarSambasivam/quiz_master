@@ -1,26 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { observable, configure, action } from "mobx";
-import { observer } from "mobx-react";
+import {Provider} from 'mobx-react';
+import RootStore from './store/RootStore'
+import { configure } from "mobx";
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 configure({enforceActions:true});
-const appState= observable({count:0,
-incCount: action(()=>{
-    appState.count +=1;
-}),
-decCount: action(()=>{
-    appState.count -=1;
-})}
-);
-const Counter = observer( props => (<section>{props.appState.count}
-<div>
-<button onClick={props.appState.incCount}>Add</button>
-<button onClick={props.appState.decCount}>Dec</button>
-</div>
-</section>))
-ReactDOM.render(<Counter appState={appState} />, document.getElementById('root'));
+const  store = new RootStore();
+ReactDOM.render(<Provider store={store}><App/></Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
